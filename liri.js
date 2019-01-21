@@ -23,7 +23,7 @@ if (command == "spotify-this-song") {
         songQuery = "The Sign Ace of Base" //default entry
         console.log(songQuery);
     }
-    RunSpotify(input);
+    RunSpotify(songQuery);
 }
 //Search up movies details with OMDBApi
 if (command == "movie-this") {
@@ -42,7 +42,7 @@ if (command == "movie-this") {
         movieQuery = "Mr.Nobody" //default entry
         console.log(movieQuery);
     }
-    RunOMDB(input);
+    RunOMDB(movieQuery);
 }
 // take the text inside of random.txt and then use it to call one of LIRI's commands
 if (command == "do-what-it-says") {
@@ -66,16 +66,15 @@ function RunSpotify(input) {
             return console.log('Error occurred: ' + err);
         }
         //print artist(s), song name, link preview of spotify song, song's album
-        var txt = `==============================================================
+        var txt = `\n==============================================================
         song name            | ${data.tracks.items[0].name}
         artist(s)            | ${data.tracks.items[0].album.artists[0].name}
         album name           | ${data.tracks.items[0].album.name}
-        spotify link preview | ${data.tracks.items[0].album.external_urls.spotify}`;
-        console.log(txt);
+        spotify link preview | ${data.tracks.items[0].album.external_urls.spotify} \n==============================================================`;
 
-        // console.log(`artist(s) : ${data.tracks.items[0].album.artists[0].name}`);
-        // console.log(`album name : ${data.tracks.items[0].album.name}`);
-        // console.log(`spotify link preview : ${data.tracks.items[0].album.external_urls.spotify}`);
+        //log output to cmd line
+        console.log(txt);
+        //log output to log.txt
         Log(txt);
     });
 }
@@ -89,16 +88,20 @@ function RunOMDB(input) {
             // Parse the body of the site and recover just the imdbRating
             // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
             // console.log(`${body}`);
-            console.log(`==============================================================
+            var txt = `\n==============================================================
             title :  ${JSON.parse(body).Title}
-            year :  ${JSON.parse(body).Year}`);
-            console.log(`year :  ${JSON.parse(body).Year}`);
-            console.log(`IMDB rating :  ${JSON.parse(body).imdbRating}`);
-            console.log(`Rotten Tomatoes rating :  ${JSON.parse(body).Ratings[1].Value}`);
-            console.log(`Country :  ${JSON.parse(body).Country}`);
-            console.log(`Language :  ${JSON.parse(body).Language}`);
-            console.log(`Plot :  ${JSON.parse(body).Plot}`);
-            console.log(`Actors :  ${JSON.parse(body).Actors}`);
+            year :  ${JSON.parse(body).Year}
+            IMDB rating :  ${JSON.parse(body).imdbRating}
+            Rotten Tomatoes rating :  ${JSON.parse(body).Ratings[1].Value}
+            Country :  ${JSON.parse(body).Country}
+            Language :  ${JSON.parse(body).Language}
+            Plot :  ${JSON.parse(body).Plot}
+            Actors :  ${JSON.parse(body).Actors}\n==============================================================`;
+     
+            //log output to cmd line
+            console.log(txt);
+            //log output to log.txt
+            Log(txt);
         }
     });
 
@@ -107,5 +110,5 @@ function Log(input) {
     fs.appendFile('log.txt', input, (err) => {
         if (err) throw err;
         console.log('The output was appended to file!');
-      });
+    });
 }
